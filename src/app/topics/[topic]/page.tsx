@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { FaBalanceScale } from 'react-icons/fa';
+import { FaBalanceScale, FaBook } from 'react-icons/fa';
 import { topicData } from '@/app/lib/topicData';
 
 interface TopicPageProps {
@@ -8,6 +8,13 @@ interface TopicPageProps {
     topic: string;
   };
 }
+
+const madhabNames = {
+  hanafi: 'Hanafi',
+  maliki: 'Maliki',
+  shafii: "Shafi'i",
+  hanbali: 'Hanbali'
+};
 
 export default function TopicPage({ params }: TopicPageProps) {
   const topic = params.topic;
@@ -49,8 +56,69 @@ export default function TopicPage({ params }: TopicPageProps) {
         ))}
       </div>
 
-      {/* Comparative View */}
+      {/* Comparative Table */}
+      <div className="mb-12">
+        <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+          Comparative Analysis
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse bg-white shadow-sm rounded-lg overflow-hidden">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Topic</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Hanafi</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Maliki</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Shafi'i</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Hanbali</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {data.chapters.map((chapter, index) => (
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <FaBook className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                      <span className="text-sm font-medium text-gray-900">{chapter.title}</span>
+                    </div>
+                  </td>
+                  {['hanafi', 'maliki', 'shafii', 'hanbali'].map((madhhab) => (
+                    <td key={madhhab} className="px-6 py-4">
+                      {madhhab === 'hanbali' ? (
+                        <div className="text-sm text-gray-600">
+                          <ul className="list-disc list-inside space-y-1">
+                            {chapter.content.slice(0, 2).map((point, i) => (
+                              <li key={i} className="truncate">
+                                {point}
+                              </li>
+                            ))}
+                            {chapter.content.length > 2 && (
+                              <li className="text-emerald-600 hover:text-emerald-700 cursor-pointer">
+                                <Link href={`/madhhab/hanbali/${topic}`}>
+                                  View {chapter.content.length - 2} more...
+                                </Link>
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                      ) : (
+                        <div className="text-sm text-gray-500 italic">
+                          Content coming soon
+                        </div>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Detailed View */}
       <div className="space-y-8">
+        <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+          Detailed Comparison
+        </h2>
         {data.chapters.map((chapter, index) => (
           <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
             <div className="p-6">

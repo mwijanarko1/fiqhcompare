@@ -31,6 +31,45 @@ export default function Home() {
     }
   ]
 
+  const madhhabs = [
+    {
+      name: "Hanafi",
+      arabicName: "الحنفي",
+      founder: "Imam Abu Hanifa (d. 767)",
+      description: "The oldest of the four schools, known for its emphasis on reason and systematic legal reasoning.",
+      regions: "Historically prevalent in Turkey, Balkans, Central Asia, South Asia, and parts of the Middle East.",
+      icon: "🕌",
+      slug: "hanafi"
+    },
+    {
+      name: "Maliki",
+      arabicName: "المالكي",
+      founder: "Imam Malik ibn Anas (d. 795)",
+      description: "Known for its emphasis on the practices of Madinah and consideration of public welfare.",
+      regions: "Historically prevalent in North and West Africa, and parts of the Middle East.",
+      icon: "🕌",
+      slug: "maliki"
+    },
+    {
+      name: "Shafi'i",
+      arabicName: "الشافعي",
+      founder: "Imam al-Shafi'i (d. 820)",
+      description: "Balances between textual evidence and analogical reasoning, known for systematic methodology.",
+      regions: "Historically prevalent in East Africa, Southeast Asia, and parts of the Middle East.",
+      icon: "🕌",
+      slug: "shafii"
+    },
+    {
+      name: "Hanbali",
+      arabicName: "الحنبلي",
+      founder: "Imam Ahmad ibn Hanbal (d. 855)",
+      description: "Known for its strict adherence to textual evidence from the Quran and Sunnah.",
+      regions: "Historically prevalent in the Arabian Peninsula.",
+      icon: "🕌",
+      slug: "hanbali"
+    }
+  ];
+
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -46,6 +85,46 @@ export default function Home() {
             <div className="inline-block bg-yellow-100 border border-yellow-200 rounded-lg px-4 py-2 text-sm text-yellow-800">
               Currently displaying Hanbali rulings. Other madhhabs coming soon.
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Browse Madhhabs Section */}
+      <section className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-8">
+            Browse Madhhabs
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {madhhabs.map((madhhab) => (
+              <div 
+                key={madhhab.slug}
+                className="block bg-white rounded-xl shadow-sm hover:shadow-md transition duration-300 p-6 group relative"
+              >
+                <Link href={`/madhhab/${madhhab.slug}`} className="block">
+                  <div className="text-center mb-4 transform group-hover:scale-110 transition duration-300">
+                    <span className="text-4xl">{madhhab.icon}</span>
+                  </div>
+                  <div className="text-center mb-4">
+                    <h3 className="font-display text-xl text-primary-600 mb-1">
+                      {madhhab.arabicName}
+                    </h3>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {madhhab.name} School
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {madhhab.founder}
+                    </p>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4">
+                    {madhhab.description}
+                  </p>
+                  <div className="text-xs text-gray-500 border-t pt-4">
+                    {madhhab.regions}
+                  </div>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>

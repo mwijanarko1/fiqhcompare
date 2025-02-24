@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { FaBook, FaArrowLeft, FaBalanceScale } from 'react-icons/fa';
+import { FaBook, FaArrowLeft, FaBalanceScale, FaArrowRight } from 'react-icons/fa';
 import ChapterAccordion from '@/app/components/ChapterAccordion';
 import { topicData } from '@/app/lib/topicData';
 
 interface MadhabTopicPageProps {
   params: {
-    madhhab: string;
+    slug: string;
     topic: string;
   };
 }
@@ -19,10 +19,10 @@ const madhabNames = {
 };
 
 export default function MadhabTopicPage({ params }: MadhabTopicPageProps) {
-  const { madhhab, topic } = params;
+  const { slug, topic } = params;
   
   // Validate madhhab
-  if (!Object.keys(madhabNames).includes(madhhab)) {
+  if (!Object.keys(madhabNames).includes(slug)) {
     notFound();
   }
 
@@ -33,7 +33,8 @@ export default function MadhabTopicPage({ params }: MadhabTopicPageProps) {
   }
 
   // For now, we only have Hanbali content
-  const isContentAvailable = madhhab === 'hanbali';
+  const isContentAvailable = slug === 'hanbali';
+  const madhabName = madhabNames[slug as keyof typeof madhabNames];
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -44,13 +45,14 @@ export default function MadhabTopicPage({ params }: MadhabTopicPageProps) {
           className="flex items-center text-gray-600 hover:text-gray-900"
         >
           <FaArrowLeft className="w-4 h-4 mr-2" />
-          Back to Comparison
+          Go to Comparison
         </Link>
         <Link
-          href={`/madhhab/${madhhab}`}
-          className="text-emerald-600 hover:text-emerald-700 font-medium"
+          href={`/madhhab/${slug}`}
+          className="flex items-center text-gray-600 hover:text-gray-900"
         >
-          View All {madhabNames[madhhab as keyof typeof madhabNames]} Topics
+          Go to {madhabName} Madhhab
+          <FaArrowRight className="w-4 h-4 ml-2" />
         </Link>
       </div>
 
@@ -59,7 +61,7 @@ export default function MadhabTopicPage({ params }: MadhabTopicPageProps) {
         <div className="flex items-center justify-center gap-2 mb-4">
           <FaBook className="w-6 h-6 text-emerald-600" />
           <h1 className="text-3xl font-bold text-gray-900">
-            {data.title.replace('(Hanbali Madhhab)', `(${madhabNames[madhhab as keyof typeof madhabNames]} Madhhab)`)}
+            {data.title} ({madhabName} Madhhab)
           </h1>
         </div>
         {!isContentAvailable && (
@@ -79,7 +81,7 @@ export default function MadhabTopicPage({ params }: MadhabTopicPageProps) {
             Content Coming Soon
           </h2>
           <p className="text-gray-600 mb-6">
-            We are currently working on adding content for the {madhabNames[madhhab as keyof typeof madhabNames]} madhhab.
+            We are currently working on adding content for the {madhabName} madhhab.
             Check back soon or view the comparative analysis for now.
           </p>
           <Link
